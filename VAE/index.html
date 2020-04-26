@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TensorFlow.js Tutorial</title>
+
+  <!-- Import TensorFlow.js -->
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.js"></script>
+  <!-- Import tfjs-vis -->
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-vis@1.0.2/dist/tfjs-vis.umd.min.js"></script>
+
+  <!-- Import VariationalAutoEncoder -->
+  <script src="Source/VariationalAutoencoder.js"></script>
+
+  <!-- Import the main script file -->
+
+  <script src="Source/samplingLayer.js" ></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/p5@1.0.0/lib/p5.js"></script>
+
+
+  <!-- utils library -->
+
+  <script src="dep/utils.js"></script>
+  <style>
+    body{
+      font-family: Arial, Helvetica, sans-serif;
+    }
+  </style>
+</head>
+
+<body >
+
+  <h1 style="margin: 0 auto; font-size: 80px">Variational AutoEncoder</h1>
+  <div style="display: flex; flex-wrap: nowrap; margin-top: 100px; width:max-content">
+
+  <div id="inputImage" >
+    <h2>Input Image</h2>
+    <div style="width: 600px; height: 600px; background-color: black"></div>
+  </div>
+
+  <div id="encoder">
+    <img src="./Assets/encder_shape.png" style="width: 700px"/>
+  </div>
+
+  <div id="latentSpaceViz" style="margin-top: 50px;">
+  <h2>Latent Space</h2>
+     
+  </div>
+
+  <div id="decoder">
+    <img src="./Assets/decoder_shape.png" style="width: 700px"/>
+  </div>
+
+  <div id='reconstructedImg' style="margin-top: 40px;">
+  </div>
+
+  </div>
+
+  <div>
+    <img id="i3" src="./Assets/Imgs/3.jpg" />
+  </div>
+
+
+  <script src="Source/interactive.js"></script>
+  <script src="Source/main.js"></script>
+
+</body>
+</html>
