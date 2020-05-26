@@ -1,4 +1,4 @@
-import {MnistData} from '../../dependency/data/mnist_data.js';
+// import {MnistData} from '../../dependency/data/mnist_data.js';
 
 async function showExamples(n='i d ex', data) {
   // Create a container in the visor
@@ -59,13 +59,13 @@ async function showConfusion(model, data) {
 }
 
 
+const data = new MnistData();
 
 let predOut, dataOut;
 
 let model = 0;
 async function runAE() {  
-  const data = new MnistData();
-  await data.load();
+await data.load();
   // await showExamples('i d n',data.nextTestBatch(20).xs);
 
 
@@ -85,7 +85,7 @@ async function runAE() {
     }
   );
 
-   model = AE.getMyModel();
+  model = AE.getMyModel();
 
   tfvis.show.modelSummary({name: 'Encoder Architecture'}, AE.getEncoderModel());
   tfvis.show.modelSummary({name: 'Decoder Architecture'}, AE.getDecoderModel());
@@ -101,8 +101,6 @@ async function runAE() {
   AE.loadWeights(savedEncoderModel.getWeights(), savedDecoderModel.getWeights(), savedMyModel.getWeights());
 
   console.log("fine");
-  // let fromPy = await tf.loadLayersModel('./SavedModel/trainedFromPy/model.json');
- 
   
   tfvis.show.modelSummary({name: 'Model Architecture'}, model);
 
@@ -120,13 +118,10 @@ async function runAE() {
   // showExamples('Input Samples',dataOut.reshape([dataOut.shape[0],784]));
 
 
-  await showLatentSpace(AE, trainXs)
-  await reconstructingOriginalImage(AE, trainXs);
+  // await showLatentSpace(AE, trainXs)
+  // await reconstructingOriginalImage(AE, trainXs);
 
   window.AE = AE;
-
-
-loop()
 }
 
 
@@ -148,8 +143,6 @@ async function showLatentSpace(AE, data){
 const myData = zPoints.arraySync().map((a) =>{return { x: a[0], y: a[1]}});
 
 const data2 = {values: myData};
-// console.log(series2)
-// console.log(myData)
 
 
 tfvis.render.scatterplot(surface0, data2);
@@ -174,9 +167,6 @@ async function reconstructingOriginalImage(AE, data){
 
   zPoints.print();
 
-  // const reconstructedImage = AE.getMyModel().predict(examples);
-
-  
   // Create a canvas element to render each example
   for (let i = 0; i < numExamples; i++) {
     const imageTensor = tf.tidy(() => {
@@ -231,4 +221,53 @@ async function reconstructingOriginalImage(AE, data){
 
 
 
+function rndImg(){
 
+  // console.log('slkdjf', rndImgBtnElem.addEventListener)
+  // getting input image:-
+  const trainXs = data.nextTrainBatch(1).xs.reshape([1, 28, 28, 1]);
+
+  // TODO: show the input image in the inputImage canvas
+    let imageTensor = tf.tidy(() => {
+      // Reshape the image to 28x28 px
+      return trainXs 
+        .slice([0, 0], [1, trainXs.shape[1]])
+        .reshape([28, 28, 1]);
+    });
+    
+    imageTensor = imageTensor.div(imageTensor.max().sub(imageTensor.min()));
+    tf.browser.toPixels(tf.image.resizeBilinear(imageTensor, [580,580]) , inpImgCanvas);
+    inputImgElem.appendChild(inpImgCanvas);
+
+    imageTensor.dispose();
+
+    updateInpImgCanvas = 1;
+
+  const zPoints = AE.getEncoderModel().predict(trainXs);
+
+  // TODO: use the conversion fns..
+  cCoords = [((10 +zPoints.dataSync()[0])/20)*500, ((10 + zPoints.dataSync()[1])/20)*500];
+
+  const reconstructedImage = AE.getDecoderModel().predict(zPoints);
+
+  let reconImgTensor = tf.tidy(() => {
+    // Reshape the image to 28x28 px
+    return reconstructedImage 
+      .slice([0, 0], [1, reconstructedImage.shape[1]])
+      .reshape([28, 28, 1]);
+  });
+  
+  reconImgTensor = reconImgTensor.div(reconImgTensor.max().sub(reconImgTensor.min()));
+
+  tf.browser.toPixels(tf.image.resizeBilinear(reconImgTensor, [580,580]) , reconImgCanvas);
+  reconImgElem.appendChild(reconImgCanvas);
+
+  reconImgTensor.dispose();
+
+
+  // latentPoint.attr('cx', scaleInv.x(zPoints.dataSync()[0]));
+  // latentPoint.attr('cy', scaleInv.y(zPoints.dataSync()[1]));
+
+  latentPoint.attr('cx', cCoords[0]);
+  latentPoint.attr('cy', cCoords[1]);
+}

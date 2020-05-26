@@ -14,31 +14,50 @@
   <!-- Import AutoEncoder -->
   <script src="Source/AutoEncoder.js"></script>
 
+  <script src="../dependency/data/mnist_data.js"></script>
+
   <!-- Import the main script file -->
-  <script src="Source/main.js" type="module"></script>
+  <script src="Source/main.js"></script>
 
   <script src="https://cdn.jsdelivr.net/npm/p5@1.0.0/lib/p5.js"></script>
+
+  <script src="../dependency/d3.js"></script>
+  <script src="../dependency/utils.js"></script>
 
 
   <style>
     body{
       font-family: Arial, Helvetica, sans-serif;
+      background-color: rgb(16, 16, 41);
+    }
+
+    #vizContainer{
+      display: flex; 
+      flex-wrap: nowrap; 
+      margin-top: 100px; 
+      width: max-content;
+      color: white;
+      text-align: center;
+      margin-left: 10%;
     }
   </style>
 </head>
 
 <body >
 
-  <h1 style="margin: 0 auto; font-size: 80px">AutoEncoder</h1>
-  <div style="display: flex; flex-wrap: nowrap; margin-top: 100px; width:max-content">
+  <h1 style="margin: 0 auto; font-size: 80px; color: white; text-align: center;">AutoEncoder</h1>
+
+  <div id="vizContainer">
 
   <div id="inputImage" >
     <h2>Input Image</h2>
-    <div style="width: 600px; height: 600px; background-color: black"></div>
+    <div id="inputImg" style="width: 600px; height: 600px; background-color: black"></div>
+    <button onclick="rndImg()">get random Image</button>
   </div>
 
+
   <div id="encoder">
-    <img src="./Assets/encder_shape.png" style="width: 700px"/>
+    <img src="./Assets/encder_shapeW.png" style="width: 700px"/>
   </div>
 
   <div id="latentSpaceViz" style="margin-top: 50px;">
@@ -47,14 +66,19 @@
   </div>
 
   <div id="decoder">
-    <img src="./Assets/decoder_shape.png" style="width: 700px"/>
+    <img src="./Assets/decoder_shapeW.png" style="width: 700px"/>
   </div>
 
   <div id='reconstructedImg' style="margin-top: 40px;">
   </div>
 
   </div>
-  <script src="Source/interactive.js"></script>
+  <!-- <script src="Source/interactive.js"></script> -->
+  <script src="Source/interact.js"></script>
+
+  <script type="module">
+
+  </script>
 
 </body>
 </html>
